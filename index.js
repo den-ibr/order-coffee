@@ -23,6 +23,8 @@ function createRemoveButton() {
   return button;
 }
 
+
+let milkCounter = 1;
 function prepareNewBeverage(fieldset) {
   const select = fieldset.querySelector('select');
   select.selectedIndex = 0;
@@ -32,6 +34,11 @@ function prepareNewBeverage(fieldset) {
   const oldButton = fieldset.querySelector('.remove-button');
   if (oldButton) oldButton.remove();
   fieldset.style.position = 'relative';
+  const milks = fieldset.querySelectorAll('.milk');
+  for (const milk of milks) {
+    milk.name = `milk${milkCounter}`;
+  }
+  milkCounter++;
   const rem = createRemoveButton();
   rem.style.position = 'absolute';
   rem.style.top = '8px';
@@ -77,9 +84,9 @@ function getSelectedCoffees() {
     for (const fs of fieldsets) {
         const coffee = fs.querySelector('select[name="coffee"]')?.value
             .replace('espresso', 'Эспрессо')
-            .replace('capuiccino', 'Капучино')
+            .replace('capuccino', 'Капучино')
             .replace('cacao', 'Какао');
-        const milk = fs.querySelector('input[name="milk"]:checked')?.value
+        const milk = fs.querySelector('.milk:checked')?.value
             .replace('usual', 'Обычное')
             .replace('no-fat', 'Обезжиренное')
             .replace('soy', 'Соевое')
@@ -92,8 +99,8 @@ function getSelectedCoffees() {
         }
         optionsStr =optionsStr.replace('whipped cream', 'Взбитые сливки,')
             .replace('marshmallow', 'Зефирки,')
-            .replace('chocolate', 'Шоколад')
-            .replace('cinnamon', 'Корица');
+            .replace('chocolate', 'Шоколад,')
+            .replace('cinnamon', 'Корица,');
 
         data.push([coffee, milk, optionsStr]);
     }
