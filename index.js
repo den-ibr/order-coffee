@@ -67,7 +67,8 @@ if (closeButton) {
     modal.style.display = 'none';
     document.getElementById('tbody').innerHTML = '';
   }
-});
+);
+}
 
 function getSelectedCoffees() {
     const fieldsets = document.querySelectorAll('fieldset');
