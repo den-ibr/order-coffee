@@ -52,15 +52,74 @@ addButton.addEventListener('click', () => {
 
 form.addEventListener('submit', function(e) {
   e.preventDefault();
-  if (modal) modal.style.display = 'flex';
+  if (modal) {
+    modal.style.display = 'flex';
+    createTable();
+  }
 });
 
 if (closeButton) {
   closeButton.addEventListener('click', function() {
     modal.style.display = 'none';
+    document.getElementById('tbody').innerHTML = '';
   });
 }
 
 window.addEventListener('click', function(e) {
   if (e.target === modal) modal.style.display = 'none';
 });
+
+function getSelectedCoffees() {
+    const fieldsets = document.querySelectorAll('fieldset');
+    console.log(fieldsets);
+    const data = [];
+    for (const fs of fieldsets) {
+        const coffee = fs.querySelector('select[name="coffee"]')?.value
+            .replace('espresso', 'Эспрессо')
+            .replace('capuiccino', 'Капучино')
+            .replace('cacao', 'Какао');
+        const milk = fs.querySelector('input[name="milk"]:checked')?.value
+            .replace('usual', 'Обычное')
+            .replace('no-fat', 'Обезжиренное')
+            .replace('soy', 'Соевое')
+            .replace('coconut', 'Кокосовое');
+        const options = fs.querySelectorAll('input[name="options"]:checked');
+        
+        let optionsStr = '';
+        for (const option of options) {
+            optionsStr += option?.value + ' ';
+        }
+        optionsStr = optionsStr.replace('whipped cream', 'Взбитые сливки,')
+            .replace('marshmallow', 'Зефирки,')
+            .replace('chocolate', 'Шоколад')
+            .replace('cinnamon', 'Корица');
+
+        data.push([coffee, milk, optionsStr]);
+    }
+    console.log(data)
+    return data
+}
+
+function makeTable(data) {
+    const tbody = document.getElementById('tbody');
+    for (const row of data) {
+        const rowEl = makeRow(row);
+        tbody.appendChild(rowEl);
+    }
+    return tbody;
+}
+
+function makeRow(rowData) {
+    const row = document.createElement('tr');
+    for (const val of rowData) {
+        const el = document.createElement('td');
+        el.innerText = val;
+        row.appendChild(el);
+    }
+    return row;
+}
+
+function createTable() {
+    const data = getSelectedCoffees();
+    makeTable(data);
+}
