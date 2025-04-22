@@ -56,17 +56,17 @@ form.addEventListener('submit', function(e) {
     modal.style.display = 'flex';
     createTable();
   }
+  const count = document.querySelectorAll('.beverage').length;
+  const rightWord = getRightForm(count);
+  modal.querySelector('p').textContent = `Вы заказали ${count} ${rightWord}`;
+  modal.style.display = 'flex';
 });
 
 if (closeButton) {
   closeButton.addEventListener('click', function() {
     modal.style.display = 'none';
     document.getElementById('tbody').innerHTML = '';
-  });
-}
-
-window.addEventListener('click', function(e) {
-  if (e.target === modal) modal.style.display = 'none';
+  }
 });
 
 function getSelectedCoffees() {
@@ -89,7 +89,7 @@ function getSelectedCoffees() {
         for (const option of options) {
             optionsStr += option?.value + ' ';
         }
-        optionsStr = optionsStr.replace('whipped cream', 'Взбитые сливки,')
+        optionsStr =optionsStr.replace('whipped cream', 'Взбитые сливки,')
             .replace('marshmallow', 'Зефирки,')
             .replace('chocolate', 'Шоколад')
             .replace('cinnamon', 'Корица');
